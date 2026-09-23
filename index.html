@@ -3,64 +3,455 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Tijarah - Coming Soon</title>
-  <meta name="description" content="Tijarah - Pakistan's B2B & B2C marketplace. Coming soon.">
+  <title>Tijarah — Coming Soon</title>
+  <meta name="description" content="Tijarah — Pakistan's B2B & B2C marketplace. Something extraordinary is coming.">
   <meta name="robots" content="index, follow">
   <meta property="og:title" content="Tijarah">
-  <meta property="og:description" content="Pakistan's B2B & B2C marketplace. Coming soon.">
+  <meta property="og:description" content="Pakistan's B2B & B2C marketplace. Something extraordinary is coming.">
   <meta property="og:url" content="https://tijarah.pk">
   <meta property="og:type" content="website">
   <link rel="canonical" href="https://tijarah.pk">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --pk-green: #01411C;
+      --emerald: #34d399;
+      --deep: #020d08;
+      --slate: #a7b8ad;
+    }
+
     body {
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      background: #0f172a;
+      background: var(--deep);
       color: #f8fafc;
       min-height: 100vh;
       display: flex;
       align-items: center;
       justify-content: center;
+      overflow: hidden;
+      position: relative;
     }
-    .container { text-align: center; padding: 2rem; }
+
+    /* ── Sky layers ────────────────────────────────────── */
+    .sky, .stars, .particles { position: fixed; inset: 0; pointer-events: none; }
+    .sky { z-index: 0; }
+    .stars { z-index: 1; }
+    .particles { z-index: 3; }
+
+    .aurora { position: fixed; inset: 0; z-index: 1; overflow: hidden; }
+    .orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(90px);
+      opacity: 0.6;
+      will-change: transform;
+    }
+    .orb-1 {
+      width: 55vmax; height: 55vmax;
+      background: radial-gradient(circle, #01411C 0%, transparent 70%);
+      top: -25%; left: -15%;
+      animation: drift1 22s ease-in-out infinite alternate;
+    }
+    .orb-2 {
+      width: 45vmax; height: 45vmax;
+      background: radial-gradient(circle, #065f46 0%, transparent 70%);
+      bottom: -20%; right: -10%;
+      animation: drift2 26s ease-in-out infinite alternate;
+    }
+    .orb-3 {
+      width: 35vmax; height: 35vmax;
+      background: radial-gradient(circle, #134e4a 0%, transparent 70%);
+      top: 40%; left: 55%;
+      animation: drift3 30s ease-in-out infinite alternate;
+    }
+    @keyframes drift1 { to { transform: translate(12vw, 10vh) scale(1.15); } }
+    @keyframes drift2 { to { transform: translate(-10vw, -12vh) scale(0.9); } }
+    @keyframes drift3 { to { transform: translate(-15vw, 8vh) scale(1.2); } }
+
+    .grid {
+      position: fixed;
+      inset: 0;
+      z-index: 1;
+      background-image:
+        linear-gradient(rgba(52, 211, 153, 0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(52, 211, 153, 0.05) 1px, transparent 1px);
+      background-size: 60px 60px;
+      mask-image: radial-gradient(ellipse at center, black 30%, transparent 75%);
+      -webkit-mask-image: radial-gradient(ellipse at center, black 30%, transparent 75%);
+    }
+
+    .moon {
+      position: fixed;
+      top: 10vh;
+      right: 12vw;
+      z-index: 1;
+      width: clamp(60px, 9vw, 110px);
+      filter: drop-shadow(0 0 40px rgba(248, 250, 252, 0.25));
+    }
+
+    .skyline {
+      position: fixed;
+      left: 0; right: 0; bottom: 0;
+      width: 100%;
+      height: clamp(140px, 26vh, 280px);
+      z-index: 2;
+    }
+
+    /* ── Ambient particles ─────────────────────────────── */
+    .star {
+      position: absolute;
+      width: 2px; height: 2px;
+      border-radius: 50%;
+      background: #ffffff;
+      opacity: 0.3;
+      animation: twinkle var(--d, 3s) ease-in-out infinite;
+      animation-delay: var(--dl, 0s);
+    }
+    @keyframes twinkle { 50% { opacity: 1; } }
+
+    .particle {
+      position: absolute;
+      bottom: -10px;
+      border-radius: 50%;
+      background: var(--emerald);
+      box-shadow: 0 0 6px var(--emerald);
+      opacity: 0;
+      animation: rise linear infinite;
+    }
+    @keyframes rise {
+      0%   { transform: translateY(0) translateX(0); opacity: 0; }
+      10%  { opacity: 0.9; }
+      85%  { opacity: 0.5; }
+      100% { transform: translateY(-105vh) translateX(var(--sway, 20px)); opacity: 0; }
+    }
+
+    .shoot {
+      position: absolute;
+      height: 2px;
+      width: 140px;
+      background: linear-gradient(90deg, rgba(255,255,255,0.9), transparent);
+      border-radius: 2px;
+      pointer-events: none;
+    }
+
+    /* ── Content ───────────────────────────────────────── */
+    .container {
+      position: relative;
+      z-index: 4;
+      text-align: center;
+      padding: 2rem;
+      max-width: 720px;
+      margin-bottom: 8vh;
+    }
+
+    .logo {
+      width: clamp(72px, 13vw, 105px);
+      height: auto;
+      margin-bottom: 1.75rem;
+      filter: drop-shadow(0 0 30px rgba(52, 211, 153, 0.4));
+      animation: float 5s ease-in-out infinite;
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-12px); }
+    }
+
     h1 {
-      font-size: clamp(2.5rem, 8vw, 5rem);
-      font-weight: 700;
-      letter-spacing: -0.02em;
-      margin-bottom: 1rem;
+      font-size: clamp(3rem, 10vw, 6.5rem);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1;
+      margin-bottom: 1.25rem;
+      perspective: 600px;
     }
-    .tagline {
-      font-size: clamp(1rem, 3vw, 1.5rem);
-      color: #94a3b8;
-      margin-bottom: 2rem;
-    }
-    .badge {
+    h1 .ltr {
       display: inline-block;
-      padding: 0.5rem 1.5rem;
-      background: rgba(34, 197, 94, 0.15);
-      border: 1px solid rgba(34, 197, 94, 0.3);
+      background: linear-gradient(120deg, #f8fafc 30%, var(--emerald) 55%, #ffffff 75%);
+      background-size: 200% auto;
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: shimmer 6s linear infinite;
+      will-change: transform, opacity;
+    }
+    @keyframes shimmer { to { background-position: 200% center; } }
+
+    .tagline {
+      font-size: clamp(1.05rem, 3vw, 1.5rem);
+      color: var(--slate);
+      font-weight: 300;
+      letter-spacing: 0.01em;
+      margin-bottom: 0.75rem;
+    }
+
+    .subtag {
+      font-size: clamp(0.9rem, 2vw, 1.05rem);
+      color: #5f7268;
+      margin-bottom: 2.75rem;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      padding: 0.65rem 1.75rem;
+      background: rgba(52, 211, 153, 0.08);
+      border: 1px solid rgba(52, 211, 153, 0.4);
       border-radius: 9999px;
-      font-size: 0.875rem;
-      color: #4ade80;
-      font-weight: 500;
+      font-size: 0.8rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--emerald);
+      font-weight: 600;
+      cursor: default;
+      animation: pulseGlow 3s ease-in-out infinite;
+      will-change: transform;
     }
+    .badge::before {
+      content: "";
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--emerald);
+      box-shadow: 0 0 10px var(--emerald);
+      animation: blink 1.6s ease-in-out infinite;
+    }
+    @keyframes pulseGlow {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(52, 211, 153, 0.25); }
+      50% { box-shadow: 0 0 25px 4px rgba(52, 211, 153, 0.15); }
+    }
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.35; }
+    }
+
     .footer {
-      margin-top: 3rem;
+      margin-top: 3.5rem;
       font-size: 0.875rem;
-      color: #64748b;
+      color: #4a5d52;
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+      align-items: center;
     }
-    .footer a { color: #94a3b8; text-decoration: none; }
-    .footer a:hover { text-decoration: underline; }
+    .footer a {
+      color: var(--slate);
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+    .footer a:hover { color: var(--emerald); }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+      }
+    }
   </style>
 </head>
 <body>
-  <main class="container">
-    <h1>Tijarah</h1>
-    <p class="tagline">Pakistan's B2B & B2C marketplace</p>
-    <span class="badge">Coming Soon</span>
-    <div class="footer">
+  <!-- Sky -->
+  <div class="sky" aria-hidden="true"></div>
+  <div class="stars" aria-hidden="true"></div>
+
+  <!-- Aurora -->
+  <div class="aurora" data-depth="0.15" aria-hidden="true">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+  </div>
+  <div class="grid" data-depth="0.05" aria-hidden="true"></div>
+
+  <!-- Crescent moon -->
+  <svg class="moon" data-depth="0.25" viewBox="0 0 100 100" fill="none" aria-hidden="true">
+    <defs>
+      <mask id="moonMask">
+        <rect width="100" height="100" fill="white"/>
+        <circle cx="62" cy="42" r="34" fill="black"/>
+      </mask>
+    </defs>
+    <circle cx="48" cy="52" r="38" fill="#f8fafc" mask="url(#moonMask)"/>
+  </svg>
+
+  <!-- Particles -->
+  <div class="particles" aria-hidden="true"></div>
+
+  <!-- Skyline silhouette -->
+  <svg class="skyline" data-depth="0.1" viewBox="0 0 1440 260" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
+    <!-- Mountains (K2-style ridge, back layer) -->
+    <path fill="#053220" opacity="0.85" d="M0 260 L0 175 L90 125 L150 180 L215 100 L265 155 L335 135 L405 190 L470 165 L545 205 L625 178 L705 212 L785 185 L865 218 L965 190 L1055 218 L1145 195 L1245 222 L1335 200 L1440 232 L1440 260 Z"/>
+    <!-- City front -->
+    <g fill="#010b06">
+      <rect x="0" y="235" width="1440" height="25"/>
+      <rect x="20" y="210" width="55" height="50"/>
+      <rect x="95" y="222" width="45" height="38"/>
+      <rect x="150" y="200" width="40" height="60"/>
+      <rect x="205" y="218" width="60" height="42"/>
+      <rect x="280" y="228" width="50" height="32"/>
+      <!-- Badshahi-style mosque -->
+      <rect x="400" y="238" width="220" height="22"/>
+      <path d="M470 238 C470 195 500 178 510 178 C520 178 550 195 550 238 Z"/>
+      <rect x="505" y="162" width="10" height="18"/>
+      <circle cx="510" cy="160" r="3"/>
+      <path d="M425 238 C425 208 443 198 450 198 C457 198 475 208 475 238 Z"/>
+      <path d="M545 238 C545 208 563 198 570 198 C577 198 595 208 595 238 Z"/>
+      <rect x="388" y="150" width="14" height="110"/>
+      <path d="M386 150 C386 138 402 138 402 150 Z"/>
+      <rect x="608" y="150" width="14" height="110"/>
+      <path d="M606 150 C606 138 622 138 622 150 Z"/>
+      <!-- Mid buildings -->
+      <rect x="660" y="215" width="55" height="45"/>
+      <rect x="730" y="228" width="45" height="32"/>
+      <rect x="790" y="205" width="50" height="55"/>
+      <!-- Minar-e-Pakistan -->
+      <rect x="880" y="245" width="70" height="15"/>
+      <path d="M895 245 L900 95 L904 80 L908 70 L912 60 L916 70 L920 80 L924 95 L929 245 Z"/>
+      <rect x="890" y="150" width="44" height="7" rx="3"/>
+      <rect x="892" y="115" width="40" height="7" rx="3"/>
+      <rect x="896" y="88" width="32" height="6" rx="3"/>
+      <circle cx="912" cy="55" r="5"/>
+      <!-- Right buildings -->
+      <rect x="980" y="220" width="55" height="40"/>
+      <rect x="1050" y="235" width="45" height="25"/>
+      <rect x="1110" y="210" width="50" height="50"/>
+      <rect x="1175" y="225" width="60" height="35"/>
+      <rect x="1250" y="215" width="45" height="45"/>
+      <rect x="1310" y="230" width="55" height="30"/>
+      <rect x="1380" y="218" width="60" height="42"/>
+    </g>
+  </svg>
+
+  <!-- Content -->
+  <main class="container" data-depth="0.04">
+    <div class="rise">
+      <svg class="logo" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Tijarah logo — crescent and star">
+        <defs>
+          <linearGradient id="lg" x1="0" y1="0" x2="100" y2="100">
+            <stop offset="0%" stop-color="#34d399"/>
+            <stop offset="100%" stop-color="#01411C"/>
+          </linearGradient>
+          <mask id="crescentMask">
+            <rect width="100" height="100" fill="white"/>
+            <circle cx="58" cy="50" r="16" fill="black"/>
+          </mask>
+        </defs>
+        <path d="M50 4 L88 26 V74 L50 96 L12 74 V26 Z" stroke="url(#lg)" stroke-width="5" fill="rgba(1,65,28,0.25)" stroke-linejoin="round"/>
+        <circle cx="47" cy="50" r="18" fill="#f8fafc" mask="url(#crescentMask)"/>
+        <polygon points="65,31 66.65,35.73 71.66,35.84 67.66,38.87 69.11,43.66 65,40.8 60.89,43.66 62.34,38.87 58.34,35.84 63.35,35.73" fill="#f8fafc"/>
+      </svg>
+    </div>
+
+    <h1 class="rise">Tijarah</h1>
+
+    <p class="tagline rise">Pakistan's B2B &amp; B2C marketplace</p>
+    <p class="subtag rise">Where businesses and buyers meet. Something extraordinary is on its way.</p>
+
+    <div class="rise">
+      <span class="badge" id="badge">Coming Soon</span>
+    </div>
+
+    <div class="footer rise">
       <a href="mailto:support@tijarah.pk">support@tijarah.pk</a>
+      <span>&copy; 2026 Tijarah</span>
     </div>
   </main>
+
+  <script type="module">
+    // Motion — the standalone engine behind Framer Motion (vanilla JS API).
+    // Physics-based springs, staggers, and gestures without React.
+    import { animate, stagger } from "https://cdn.jsdelivr.net/npm/motion@12/+esm";
+
+    const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const rand = (min, max) => min + Math.random() * (max - min);
+
+    // ── Staggered entrance ──────────────────────────────────
+    animate(
+      ".rise",
+      { opacity: [0, 1], y: [26, 0] },
+      { delay: stagger(0.13, { start: 0.15 }), duration: 0.9, easing: [0.22, 1, 0.36, 1] }
+    );
+
+    // ── Per-letter spring entrance for the title ────────────
+    const h1 = document.querySelector("h1");
+    h1.innerHTML = h1.textContent
+      .split("")
+      .map((c) => `<span class="ltr">${c}</span>`)
+      .join("");
+    animate(
+      "h1 .ltr",
+      { opacity: [0, 1], y: [44, 0], rotateX: [-70, 0] },
+      { delay: stagger(0.055, { start: 0.35 }), type: "spring", stiffness: 160, damping: 15 }
+    );
+
+    if (!reduced) {
+      // ── Mouse parallax across the whole scene ─────────────
+      const layers = document.querySelectorAll("[data-depth]");
+      addEventListener("mousemove", (e) => {
+        const nx = e.clientX / innerWidth - 0.5;
+        const ny = e.clientY / innerHeight - 0.5;
+        layers.forEach((el) => {
+          const d = parseFloat(el.dataset.depth);
+          animate(el, { x: nx * d * 90, y: ny * d * 55 }, { type: "spring", stiffness: 45, damping: 18 });
+        });
+      });
+
+      // ── Twinkling stars ───────────────────────────────────
+      const stars = document.querySelector(".stars");
+      for (let i = 0; i < 70; i++) {
+        const s = document.createElement("span");
+        s.className = "star";
+        s.style.left = rand(0, 100) + "%";
+        s.style.top = rand(0, 70) + "%";
+        s.style.setProperty("--d", rand(1.8, 4.5) + "s");
+        s.style.setProperty("--dl", rand(0, 5) + "s");
+        s.style.transform = `scale(${rand(0.6, 1.8)})`;
+        stars.appendChild(s);
+      }
+
+      // ── Rising ember particles ────────────────────────────
+      const particles = document.querySelector(".particles");
+      for (let i = 0; i < 32; i++) {
+        const p = document.createElement("span");
+        p.className = "particle";
+        const size = rand(2, 5);
+        p.style.width = p.style.height = size + "px";
+        p.style.left = rand(0, 100) + "%";
+        p.style.animationDuration = rand(9, 17) + "s";
+        p.style.animationDelay = rand(0, 14) + "s";
+        p.style.setProperty("--sway", rand(-60, 60) + "px");
+        if (Math.random() < 0.3) {
+          p.style.background = "#f8fafc";
+          p.style.boxShadow = "0 0 6px #f8fafc";
+        }
+        particles.appendChild(p);
+      }
+
+      // ── Occasional shooting star ──────────────────────────
+      const sky = document.querySelector(".sky");
+      const shoot = () => {
+        const s = document.createElement("div");
+        s.className = "shoot";
+        s.style.top = rand(5, 35) + "%";
+        s.style.left = rand(55, 95) + "%";
+        sky.appendChild(s);
+        animate(
+          s,
+          { x: [0, -720], y: [0, 300], rotate: -25, opacity: [0, 1, 1, 0] },
+          { duration: 1.15, easing: "ease-out" }
+        ).then(() => s.remove());
+        setTimeout(shoot, rand(5000, 11000));
+      };
+      setTimeout(shoot, rand(2500, 5000));
+
+      // ── Badge spring on hover ─────────────────────────────
+      const badge = document.getElementById("badge");
+      badge.addEventListener("pointerenter", () =>
+        animate(badge, { scale: 1.08 }, { type: "spring", stiffness: 400, damping: 15 })
+      );
+      badge.addEventListener("pointerleave", () =>
+        animate(badge, { scale: 1 }, { type: "spring", stiffness: 300, damping: 17 })
+      );
+    }
+  </script>
 </body>
 </html>
