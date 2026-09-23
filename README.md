@@ -2,18 +2,21 @@
 
 Static "Coming Soon" page for [tijarah.pk](https://tijarah.pk).
 
-Hosted on Cloudflare Pages (free, always-on, global CDN).
+Hosted on GitHub Pages from this repository — always-on, free, independent of the EC2 backend.
 
-## Structure
+## DNS (Route 53 — hosted zone `tijarah.pk`)
 
-- `index.html` — the landing page
-- `CNAME` — custom domain config for Cloudflare Pages
+| Name | Type | Value |
+|---|---|---|
+| `tijarah.pk` | A | `185.199.108.153`, `185.199.109.153`, `185.199.110.153`, `185.199.111.153` |
+| `www.tijarah.pk` | CNAME | `shehryarkhan12.github.io` |
+
+Backend subdomains (`be`, `dev-be`, `dev`) are unaffected — they still point to the EC2 instance.
 
 ## Deploy
 
-1. Push to `main` — Cloudflare Pages auto-deploys
-2. DNS: `tijarah.pk` CNAME → `tijarah-landing.pages.dev`
+Push to `main` — GitHub Pages auto-deploys via the `pages build and deployment` workflow.
 
 ## When the real frontend is ready
 
-Either deploy the frontend to Cloudflare Pages too, or switch the apex DNS A record back to the EC2 instance. This repo can then be archived.
+Replace the apex `A` records with the frontend host (e.g., EC2 IP, CloudFront, Vercel) in Route 53, then archive or delete this repo.
