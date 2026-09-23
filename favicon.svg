@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <defs>
+    <linearGradient id="lg" x1="0" y1="0" x2="100" y2="100">
+      <stop offset="0%" stop-color="#34d399"/>
+      <stop offset="100%" stop-color="#01411C"/>
+    </linearGradient>
+    <mask id="crescentMask">
+      <rect width="100" height="100" fill="white"/>
+      <circle cx="58" cy="50" r="16" fill="black"/>
+    </mask>
+  </defs>
+  <rect width="100" height="100" rx="22" fill="#020d08"/>
+  <path d="M50 8 L86 28 V72 L50 92 L14 72 V28 Z" stroke="url(#lg)" stroke-width="6" fill="rgba(1,65,28,0.35)" stroke-linejoin="round"/>
+  <circle cx="47" cy="50" r="16" fill="#f8fafc" mask="url(#crescentMask)"/>
+  <polygon points="64,32 65.65,36.73 70.66,36.84 66.66,39.87 68.11,44.66 64,41.8 59.89,44.66 61.34,39.87 57.34,36.84 62.35,36.73" fill="#f8fafc"/>
+</svg>
