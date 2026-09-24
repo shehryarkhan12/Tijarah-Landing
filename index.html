@@ -17,8 +17,8 @@
   <meta name="twitter:title" content="Tijarah — Pakistan's B2B & B2C Marketplace">
   <meta name="twitter:description" content="Wholesale trade, price comparison, verified authenticity, smart delivery. Launching soon.">
   <link rel="canonical" href="https://tijarah.pk">
-  <link rel="icon" type="image/svg+xml" href="favicon.svg?v=2">
-  <link rel="mask-icon" href="favicon.svg" color="#01411C">
+  <link rel="icon" type="image/png" href="logo.png?v=3">
+  <link rel="apple-touch-icon" href="logo.png">
   <meta name="theme-color" content="#020d08">
   <script type="application/ld+json">
   {
@@ -26,7 +26,7 @@
     "@type": "Organization",
     "name": "Tijarah",
     "url": "https://tijarah.pk",
-    "logo": "https://tijarah.pk/favicon.svg",
+    "logo": "https://tijarah.pk/logo.png",
     "description": "Pakistan's B2B & B2C online marketplace — wholesale trade, price comparison, verified authenticity, smart delivery.",
     "contactPoint": {
       "@type": "ContactPoint",
@@ -170,8 +170,9 @@
     }
 
     .logo {
-      width: clamp(72px, 13vw, 105px);
+      width: clamp(84px, 15vw, 120px);
       height: auto;
+      border-radius: 24%;
       margin-bottom: 1.75rem;
       filter: drop-shadow(0 0 30px rgba(52, 211, 153, 0.4));
       animation: float 5s ease-in-out infinite;
@@ -449,21 +450,7 @@
   <!-- Content -->
   <main class="container" data-depth="0.04">
     <div class="rise">
-      <svg class="logo" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Tijarah logo — crescent and star">
-        <defs>
-          <linearGradient id="lg" x1="0" y1="0" x2="100" y2="100">
-            <stop offset="0%" stop-color="#34d399"/>
-            <stop offset="100%" stop-color="#01411C"/>
-          </linearGradient>
-          <mask id="crescentMask">
-            <rect width="100" height="100" fill="white"/>
-            <circle cx="58" cy="50" r="16" fill="black"/>
-          </mask>
-        </defs>
-        <path d="M50 4 L88 26 V74 L50 96 L12 74 V26 Z" stroke="url(#lg)" stroke-width="5" fill="rgba(1,65,28,0.25)" stroke-linejoin="round"/>
-        <circle cx="47" cy="50" r="18" fill="#f8fafc" mask="url(#crescentMask)"/>
-        <polygon points="65,31 66.65,35.73 71.66,35.84 67.66,38.87 69.11,43.66 65,40.8 60.89,43.66 62.34,38.87 58.34,35.84 63.35,35.73" fill="#f8fafc"/>
-      </svg>
+      <img class="logo" src="logo.png" alt="Tijarah logo" width="120" height="120">
     </div>
 
     <h1 class="rise">Tijarah</h1>
