@@ -339,11 +339,46 @@
     @media (max-width: 640px) { .cards { grid-template-columns: repeat(2, 1fr); } }
     @media (max-width: 420px) { .cards { grid-template-columns: 1fr; } }
 
+    /* ── Launch waitlist (Hostinger Reach embed) ───────── */
+    .notify { margin-top: 2.8rem; }
+    .notify-card {
+      position: relative;
+      overflow: hidden;
+      max-width: 460px;
+      margin: 0 auto;
+      background: linear-gradient(160deg, rgba(1, 65, 28, 0.35), rgba(255, 255, 255, 0.02));
+      border: 1px solid rgba(52, 211, 153, 0.18);
+      border-radius: 16px;
+      padding: 1.5rem 1.3rem 1.1rem;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35);
+    }
+    .notify-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(200px circle at 50% -20%, rgba(52, 211, 153, 0.18), transparent 65%);
+      pointer-events: none;
+    }
+    .reach-form {
+      position: relative;
+      min-height: 165px; /* reserve space so the card doesn't jump when embed.js injects */
+    }
+    .notify-alt {
+      position: relative;
+      margin-top: 0.8rem;
+      font-size: 0.72rem;
+      color: #4a5d52;
+    }
+    .notify-alt a { color: var(--emerald); text-decoration: none; }
+    .notify-alt a:hover { text-decoration: underline; }
+
     /* ── Mobile performance: cut GPU-heavy effects ─────── */
     @media (pointer: coarse), (max-width: 768px) {
       .orb { filter: blur(50px); opacity: 0.4; }
       .orb-3 { display: none; }
-      .card { backdrop-filter: none; -webkit-backdrop-filter: none; }
+      .card, .notify-card { backdrop-filter: none; -webkit-backdrop-filter: none; }
       .card::after { display: none; }          /* shimmer sweep — cheap on desktop, wasteful on touch */
       .logo { filter: none; animation: none; } /* drop-shadow filter + float are costly per-frame on mobile */
       .moon { filter: none; }
@@ -498,6 +533,14 @@
       </div>
     </section>
 
+    <section class="notify">
+      <h2 class="features-title rise">Get notified at launch</h2>
+      <div class="notify-card rise">
+        <div class="reach-form" data-reach-form="ac8ab2e9-6744-4392-ad08-a2f9bbe250cf"></div>
+        <p class="notify-alt">Prefer email? <a href="mailto:support@tijarah.pk">support@tijarah.pk</a></p>
+      </div>
+    </section>
+
     <div class="footer rise">
       <a href="mailto:support@tijarah.pk">support@tijarah.pk</a>
       <span>&copy; 2026 Tijarah</span>
@@ -641,5 +684,6 @@
       }
     }
   </script>
+  <script src="https://cdn-reach.hostinger.com/js/embed.js"></script>
 </body>
 </html>
