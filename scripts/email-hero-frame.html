@@ -33,27 +33,32 @@
       opacity: 0.6;
       will-change: transform;
     }
+    /* Seamless-loop contract: EVERY animation's full cycle must evenly
+       divide PERIOD (4s). Orbs use symmetric keyframes (peak at 50%,
+       back to rest at 100%) — no `alternate`. Stars/particles use 4s or
+       2s durations with negative delays so they're mid-cycle at t=0.
+       The capture script samples t = frame*100ms deterministically. */
     .orb-1 {
       width: 330px; height: 330px;
       background: radial-gradient(circle, #01411C 0%, transparent 70%);
       top: -40%; left: -12%;
-      animation: drift1 22s ease-in-out infinite alternate;
+      animation: drift1 4s ease-in-out infinite;
     }
     .orb-2 {
       width: 280px; height: 280px;
       background: radial-gradient(circle, #065f46 0%, transparent 70%);
       bottom: -35%; right: -8%;
-      animation: drift2 26s ease-in-out infinite alternate;
+      animation: drift2 4s ease-in-out infinite;
     }
     .orb-3 {
       width: 220px; height: 220px;
       background: radial-gradient(circle, #134e4a 0%, transparent 70%);
       top: 35%; left: 58%;
-      animation: drift3 30s ease-in-out infinite alternate;
+      animation: drift3 4s ease-in-out infinite;
     }
-    @keyframes drift1 { to { transform: translate(70px, 30px) scale(1.15); } }
-    @keyframes drift2 { to { transform: translate(-60px, -36px) scale(0.9); } }
-    @keyframes drift3 { to { transform: translate(-90px, 24px) scale(1.2); } }
+    @keyframes drift1 { 50% { transform: translate(70px, 30px) scale(1.15); } }
+    @keyframes drift2 { 50% { transform: translate(-60px, -36px) scale(0.9); } }
+    @keyframes drift3 { 50% { transform: translate(-90px, 24px) scale(1.2); } }
 
     .grid {
       position: absolute; inset: 0;
@@ -144,14 +149,16 @@
     // Same star/particle generation as index.html, deterministic counts
     // tuned for the 600x300 canvas.
     const rand = (min, max) => Math.random() * (max - min) + min;
+    // Durations must divide the 4s capture period: pick 2s or 4s only.
+    const pickDuration = () => (Math.random() < 0.5 ? "2s" : "4s");
     const stars = document.querySelector(".stars");
     for (let i = 0; i < 45; i++) {
       const s = document.createElement("span");
       s.className = "star";
       s.style.left = rand(0, 100) + "%";
       s.style.top = rand(0, 80) + "%";
-      s.style.setProperty("--d", rand(1.8, 4.5) + "s");
-      s.style.setProperty("--dl", rand(0, 5) + "s");
+      s.style.setProperty("--d", pickDuration());
+      s.style.setProperty("--dl", -rand(0, 4) + "s");
       s.style.transform = `scale(${rand(0.6, 1.8)})`;
       stars.appendChild(s);
     }
@@ -162,8 +169,8 @@
       const size = rand(2, 4);
       p.style.width = p.style.height = size + "px";
       p.style.left = rand(0, 100) + "%";
-      p.style.animationDuration = rand(6, 11) + "s";
-      p.style.animationDelay = rand(0, 8) + "s";
+      p.style.animationDuration = pickDuration();
+      p.style.animationDelay = -rand(0, 4) + "s";
       p.style.setProperty("--sway", rand(-40, 40) + "px");
       if (Math.random() < 0.3) {
         p.style.background = "#f8fafc";
