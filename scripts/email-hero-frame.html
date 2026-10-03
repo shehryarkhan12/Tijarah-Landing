@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<!--
+  Capture canvas for the welcome-email hero GIF.
+  Reproduces the coming-soon page's ambient animation (deep sky, drifting
+  emerald orbs, twinkling stars, rising particles) at email-hero size
+  (600x300). Rendered by scripts/capture-email-hero.js — a build-time
+  tool only; never linked from index.html or shipped anywhere except
+  the produced email-hero.gif.
+-->
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body {
+      width: 600px; height: 300px;
+      overflow: hidden;
+      background: #020d08;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+    .frame {
+      position: relative;
+      width: 600px; height: 300px;
+      overflow: hidden;
+    }
+
+    /* ── Sky layers (mirrors index.html) ─────────────── */
+    .sky, .stars, .particles { position: absolute; inset: 0; pointer-events: none; }
+    .orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(60px);
+      opacity: 0.6;
+      will-change: transform;
+    }
+    .orb-1 {
+      width: 330px; height: 330px;
+      background: radial-gradient(circle, #01411C 0%, transparent 70%);
+      top: -40%; left: -12%;
+      animation: drift1 22s ease-in-out infinite alternate;
+    }
+    .orb-2 {
+      width: 280px; height: 280px;
+      background: radial-gradient(circle, #065f46 0%, transparent 70%);
+      bottom: -35%; right: -8%;
+      animation: drift2 26s ease-in-out infinite alternate;
+    }
+    .orb-3 {
+      width: 220px; height: 220px;
+      background: radial-gradient(circle, #134e4a 0%, transparent 70%);
+      top: 35%; left: 58%;
+      animation: drift3 30s ease-in-out infinite alternate;
+    }
+    @keyframes drift1 { to { transform: translate(70px, 30px) scale(1.15); } }
+    @keyframes drift2 { to { transform: translate(-60px, -36px) scale(0.9); } }
+    @keyframes drift3 { to { transform: translate(-90px, 24px) scale(1.2); } }
+
+    .grid {
+      position: absolute; inset: 0;
+      background-image:
+        linear-gradient(rgba(52, 211, 153, 0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(52, 211, 153, 0.05) 1px, transparent 1px);
+      background-size: 60px 60px;
+      mask-image: radial-gradient(ellipse at center, black 30%, transparent 75%);
+      -webkit-mask-image: radial-gradient(ellipse at center, black 30%, transparent 75%);
+    }
+
+    .star {
+      position: absolute;
+      width: 2px; height: 2px;
+      border-radius: 50%;
+      background: #ffffff;
+      opacity: 0.3;
+      animation: twinkle var(--d, 3s) ease-in-out infinite;
+      animation-delay: var(--dl, 0s);
+    }
+    @keyframes twinkle { 50% { opacity: 1; } }
+
+    .particle {
+      position: absolute;
+      bottom: -10px;
+      border-radius: 50%;
+      background: #34d399;
+      box-shadow: 0 0 6px #34d399;
+      opacity: 0;
+      animation: rise linear infinite;
+    }
+    @keyframes rise {
+      0%   { transform: translateY(0) translateX(0); opacity: 0; }
+      10%  { opacity: 0.9; }
+      85%  { opacity: 0.5; }
+      100% { transform: translateY(-320px) translateX(var(--sway, 20px)); opacity: 0; }
+    }
+
+    /* ── Wordmark ────────────────────────────────────── */
+    .wordmark {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      z-index: 5;
+    }
+    .wordmark img {
+      width: 54px; height: 54px;
+      border-radius: 14px;
+      border: 1px solid #0d3b26;
+      margin-bottom: 10px;
+    }
+    .wordmark h1 {
+      font-size: 34px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      color: #f8fafc;
+      margin-bottom: 8px;
+    }
+    .wordmark .tag {
+      font-size: 11px;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: #34d399;
+    }
+  </style>
+</head>
+<body>
+  <div class="frame">
+    <div class="sky">
+      <div class="orb orb-1"></div>
+      <div class="orb orb-2"></div>
+      <div class="orb orb-3"></div>
+    </div>
+    <div class="grid"></div>
+    <div class="stars"></div>
+    <div class="particles"></div>
+    <div class="wordmark">
+      <img src="../logo.png" alt="" />
+      <h1>TIJARAH</h1>
+      <div class="tag">Pakistan's B2B &amp; B2C Marketplace</div>
+    </div>
+  </div>
+  <script>
+    // Same star/particle generation as index.html, deterministic counts
+    // tuned for the 600x300 canvas.
+    const rand = (min, max) => Math.random() * (max - min) + min;
+    const stars = document.querySelector(".stars");
+    for (let i = 0; i < 45; i++) {
+      const s = document.createElement("span");
+      s.className = "star";
+      s.style.left = rand(0, 100) + "%";
+      s.style.top = rand(0, 80) + "%";
+      s.style.setProperty("--d", rand(1.8, 4.5) + "s");
+      s.style.setProperty("--dl", rand(0, 5) + "s");
+      s.style.transform = `scale(${rand(0.6, 1.8)})`;
+      stars.appendChild(s);
+    }
+    const particles = document.querySelector(".particles");
+    for (let i = 0; i < 20; i++) {
+      const p = document.createElement("span");
+      p.className = "particle";
+      const size = rand(2, 4);
+      p.style.width = p.style.height = size + "px";
+      p.style.left = rand(0, 100) + "%";
+      p.style.animationDuration = rand(6, 11) + "s";
+      p.style.animationDelay = rand(0, 8) + "s";
+      p.style.setProperty("--sway", rand(-40, 40) + "px");
+      if (Math.random() < 0.3) {
+        p.style.background = "#f8fafc";
+        p.style.boxShadow = "0 0 6px #f8fafc";
+      }
+      particles.appendChild(p);
+    }
+  </script>
+</body>
+</html>
