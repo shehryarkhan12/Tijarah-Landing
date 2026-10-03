@@ -339,7 +339,7 @@
     @media (max-width: 640px) { .cards { grid-template-columns: repeat(2, 1fr); } }
     @media (max-width: 420px) { .cards { grid-template-columns: 1fr; } }
 
-    /* ── Launch waitlist (Hostinger Reach embed) ───────── */
+    /* ── Launch waitlist (own subscribe endpoint) ──────── */
     .notify { margin-top: 2.8rem; }
     .notify-card {
       position: relative;
@@ -361,10 +361,69 @@
       background: radial-gradient(200px circle at 50% -20%, rgba(52, 211, 153, 0.18), transparent 65%);
       pointer-events: none;
     }
-    .reach-form {
+    .waitlist-form {
       position: relative;
-      min-height: 165px; /* reserve space so the card doesn't jump when embed.js injects */
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      min-height: 120px;
     }
+    .waitlist-form input[type="email"] {
+      width: 100%;
+      padding: 0.85rem 1rem;
+      font-size: 0.95rem;
+      color: #f8fafc;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(52, 211, 153, 0.25);
+      border-radius: 10px;
+      outline: none;
+      transition: border-color 0.25s ease, box-shadow 0.25s ease;
+    }
+    .waitlist-form input[type="email"]::placeholder { color: #4a5d52; }
+    .waitlist-form input[type="email"]:focus {
+      border-color: var(--emerald);
+      box-shadow: 0 0 0 3px rgba(52, 211, 153, 0.15);
+    }
+    .waitlist-form button {
+      padding: 0.85rem 1rem;
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--deep);
+      background: var(--emerald);
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+    }
+    .waitlist-form button:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 8px 24px rgba(52, 211, 153, 0.35);
+    }
+    .waitlist-form button:disabled { opacity: 0.6; cursor: wait; transform: none; box-shadow: none; }
+    .waitlist-hp {
+      position: absolute;
+      left: -9999px;
+      width: 1px;
+      height: 1px;
+      opacity: 0;
+      pointer-events: none;
+    }
+    .waitlist-status {
+      position: relative;
+      font-size: 0.8rem;
+      min-height: 1rem;
+      text-align: center;
+    }
+    .waitlist-status.ok { color: var(--emerald); }
+    .waitlist-status.err { color: #f87171; }
+    .waitlist-done {
+      position: relative;
+      padding: 1.2rem 0.5rem;
+      font-size: 1rem;
+      color: #f8fafc;
+      text-align: center;
+    }
+    .waitlist-done strong { color: var(--emerald); }
     .notify-alt {
       position: relative;
       margin-top: 0.8rem;
@@ -562,7 +621,25 @@
     <section class="notify">
       <h2 class="features-title rise">Get notified at launch</h2>
       <div class="notify-card rise">
-        <div class="reach-form" data-reach-form="ac8ab2e9-6744-4392-ad08-a2f9bbe250cf"></div>
+        <form class="waitlist-form" id="waitlist-form" novalidate>
+          <input
+            type="email"
+            name="email"
+            placeholder="you@example.com"
+            autocomplete="email"
+            required
+          />
+          <input
+            type="text"
+            name="website"
+            class="waitlist-hp"
+            tabindex="-1"
+            autocomplete="off"
+            aria-hidden="true"
+          />
+          <button type="submit">Notify me at launch</button>
+          <p class="waitlist-status" id="waitlist-status" role="status" aria-live="polite"></p>
+        </form>
         <p class="notify-alt">Prefer email? <a href="mailto:support@tijarah.pk">support@tijarah.pk</a></p>
       </div>
     </section>
@@ -717,6 +794,59 @@
       }
     }
   </script>
-  <script src="https://cdn-reach.hostinger.com/js/embed.js"></script>
+  <script>
+    // Launch waitlist — posts to the serverless subscribe endpoint
+    // (AWS Lambda → DynamoDB + Mailjet welcome email). Honeypot field
+    // ("website") is invisible to humans; filled submissions are silently
+    // discarded server-side.
+    (function () {
+      var ENDPOINT =
+        "https://lwnmpwgeokob3e6jorgbkwqxw40hlnol.lambda-url.us-east-1.on.aws/";
+      var form = document.getElementById("waitlist-form");
+      var status = document.getElementById("waitlist-status");
+      if (!form) return;
+
+      form.addEventListener("submit", function (e) {
+        e.preventDefault();
+        var email = form.email.value.trim();
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) {
+          status.textContent = "Please enter a valid email address.";
+          status.className = "waitlist-status err";
+          return;
+        }
+
+        var button = form.querySelector("button");
+        button.disabled = true;
+        button.textContent = "Joining…";
+        status.textContent = "";
+        status.className = "waitlist-status";
+
+        fetch(ENDPOINT, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email: email, website: form.website.value }),
+        })
+          .then(function (res) { return res.json(); })
+          .then(function (data) {
+            if (data.success) {
+              form.outerHTML =
+                '<div class="waitlist-done">' +
+                "<strong>You're on the list.</strong><br>" +
+                "We'll email you the moment Tijarah goes live." +
+                "</div>";
+            } else {
+              throw new Error(data.message || "Subscribe failed");
+            }
+          })
+          .catch(function () {
+            button.disabled = false;
+            button.textContent = "Notify me at launch";
+            status.textContent =
+              "Something went wrong — please try again in a moment.";
+            status.className = "waitlist-status err";
+          });
+      });
+    })();
+  </script>
 </body>
 </html>
