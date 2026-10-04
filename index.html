@@ -363,18 +363,28 @@
     }
     .notify-heading {
       position: relative;
-      margin: 0 0 0.35rem;
-      font-size: 1.15rem;
+      margin: 0 0 0.5rem;
+      font-size: 1.4rem;
       font-weight: 700;
       color: #f8fafc;
       letter-spacing: -0.01em;
+      text-align: left;
     }
     .notify-sub {
       position: relative;
       margin: 0 0 1.1rem;
-      font-size: 0.82rem;
+      font-size: 0.85rem;
       line-height: 1.5;
       color: var(--slate);
+      text-align: left;
+    }
+    .waitlist-label {
+      position: relative;
+      margin-bottom: -0.35rem;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: #e2e8f0;
+      text-align: left;
     }
     .waitlist-form {
       position: relative;
@@ -646,12 +656,14 @@
       <h2 class="features-title rise">Get notified at launch</h2>
       <div class="notify-card rise">
         <form class="waitlist-form" id="waitlist-form" novalidate>
-          <h3 class="notify-heading">Join the waitlist</h3>
-          <p class="notify-sub">Be first through the doors — early access, launch perks, zero spam.</p>
+          <h3 class="notify-heading">Be first to know when we launch</h3>
+          <p class="notify-sub">Joining the waitlist gets you early access and launch updates.</p>
+          <label class="waitlist-label" for="waitlist-email">Email address</label>
           <input
             type="email"
             name="email"
-            placeholder="you@example.com"
+            id="waitlist-email"
+            placeholder="your@email.com"
             autocomplete="email"
             required
           />
@@ -663,7 +675,7 @@
             autocomplete="off"
             aria-hidden="true"
           />
-          <button type="submit">Notify me at launch</button>
+          <button type="submit">Notify me</button>
           <p class="waitlist-status" id="waitlist-status" role="status" aria-live="polite"></p>
         </form>
         <p class="notify-alt">Prefer email? <a href="mailto:support@tijarah.pk">support@tijarah.pk</a></p>
@@ -882,7 +894,7 @@
           })
           .catch(function () {
             button.disabled = false;
-            button.textContent = "Notify me at launch";
+            button.textContent = "Notify me";
             status.textContent =
               "Something went wrong — please try again in a moment.";
             status.className = "waitlist-status err";
