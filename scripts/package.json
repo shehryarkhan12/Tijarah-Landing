@@ -1,0 +1,13 @@
+{
+  "name": "tijarah-landing-scripts",
+  "private": true,
+  "description": "Build-time tooling for tijarah.pk landing assets (email hero GIF capture)",
+  "scripts": {
+    "capture:email-hero": "node capture-email-hero.mjs"
+  },
+  "devDependencies": {
+    "gifenc": "^1.0.3",
+    "pngjs": "^7.0.0",
+    "puppeteer": "^24.0.0"
+  }
+}
