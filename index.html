@@ -361,6 +361,21 @@
       background: radial-gradient(200px circle at 50% -20%, rgba(52, 211, 153, 0.18), transparent 65%);
       pointer-events: none;
     }
+    .notify-heading {
+      position: relative;
+      margin: 0 0 0.35rem;
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: #f8fafc;
+      letter-spacing: -0.01em;
+    }
+    .notify-sub {
+      position: relative;
+      margin: 0 0 1.1rem;
+      font-size: 0.82rem;
+      line-height: 1.5;
+      color: var(--slate);
+    }
     .waitlist-form {
       position: relative;
       display: flex;
@@ -631,6 +646,8 @@
       <h2 class="features-title rise">Get notified at launch</h2>
       <div class="notify-card rise">
         <form class="waitlist-form" id="waitlist-form" novalidate>
+          <h3 class="notify-heading">Join the waitlist</h3>
+          <p class="notify-sub">Be first through the doors — early access, launch perks, zero spam.</p>
           <input
             type="email"
             name="email"
