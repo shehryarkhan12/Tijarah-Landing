@@ -9,7 +9,7 @@ Hosted on GitHub Pages from this repository — always-on, free, independent of 
 | Name | Type | Value |
 |---|---|---|
 | `tijarah.pk` | A | `185.199.108.153`, `185.199.109.153`, `185.199.110.153`, `185.199.111.153` |
-| `www.tijarah.pk` | CNAME | `shehryarkhan12.github.io` |
+| `www.tijarah.pk` | CNAME | `shevris.github.io` |
 
 Backend subdomains (`be`, `dev-be`, `dev`) are unaffected — they still point to the EC2 instance.
 
